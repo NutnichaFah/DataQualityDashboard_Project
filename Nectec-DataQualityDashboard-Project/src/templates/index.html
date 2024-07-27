@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Welcome To My Page</h1>
+
+<ul class="list-group list-group-flush">
+    <a href="/dashboard">
+        <li class="list-group-item">Dashboard</li>
+    </a>
+    <a href="/datasets">
+        <li class="list-group-item">Datasets</li>
+    </a>
+    <a href="/qa">
+        <li class="list-group-item">Data Quality Metrics Table</li>
+    </a>
+    <a href="/pa">
+        <li class="list-group-item">Package Table</li>
+    </a>
+    <a href="/re">
+        <li class="list-group-item">Resource Table</li>
+    </a>
+</ul>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Bootstraps -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- DataTable js-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />
+    <style>
+        .dashboard-filter-group {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+
+</head>
+<body>
+
+    <h3> 
+        You have selected this Parent: <span id="selectedParent"></span>
+    </h3> 
+    <form method="POST">
+        <select name="parent" id="parentList" onchange="onChange()">
+            {% for parent in parent_select %}
+            <option value="{{ parent.parent_title }}"> {{ parent.parent_title }} </option>
+            {% endfor %}
+        </select>
+    </form>
+        
+
+    <script>
+        function onChange() {
+        var selectedValue = document.getElementById("parentList").value;
+        document.getElementById("selectedParent").textContent = selectedValue;
+    }
+    </script>
+    
+    <select id="childList">
+    </select>
+    <!-- {{child_select}} -->
+    <script>
+    function getChildren() {
+        var parent_option = document.getElementById("parentList").value;
+        // console.log(parent_option)
+        // fetch("/getChildren/" + parent_option)
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         var child_select = document.getElementById("childList");
+        //         child_select.innerHTML = "";
+        //         data.forEach(child => {
+        //             var option = document.createElement("option");
+        //             option.text = child.child_title;
+        //             child_select.add(option);
+        //         });
+        //     });
+    }
+    </script>
+    
+
+    </div>
+</body>
+</html>

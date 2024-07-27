@@ -1,0 +1,36 @@
+<h1>Resource Table</h1>
+<a href="/datasets" class="btn btn-success">กลับหน้าชุดข้อมูล</a>
+<h3 id="package_title">ชุดข้อมูล: {{ package_title }}</h3>
+<h4 id="resource_count">จำนวนทรัพยากร: {{ resource_count }}</h4>
+
+<!-- Selected Resource Table  -->
+<table id="table-resource" class="table table-striped ">
+    <thead>
+        <tr class="table-resource">
+            <th>Id</th>
+            <th>ชุดข้อมูล</th>
+            <th>Format</th>
+            <th>Timeliness</th>
+            <th>Openness</th>
+            <th>Downloadable</th>
+            <th>Validity</th>
+            <th>Consistency</th>
+            <th>Machine_readable</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dt in resource_q %}
+        <tr>
+            <td>{{ dt.id }}</td>
+            <td>{{ dt.name }}</td>
+            <td>{{ dt.format }}</td>
+            <td>{{ dt.timeliness }}</td>
+            <td>{{ dt.openness }}</td>
+            <td>{{ dt.downloadable }}</td>
+            <td>{{ dt.validity }}</td>
+            <td>{{ dt.consistency }}</td>
+            <td>{{ dt.machine_readable }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <table>

@@ -1,0 +1,27 @@
+{% extends 'table.html' %}
+
+{% block title %}Package Join Resource{% endblock %}
+
+{% block body %}
+    <!-- Display list_all_qualities data -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>package_id</th>
+                <th>resource_id</th>
+                <th>title</th>
+                <th>state</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in pa_join_re_data %}
+            <tr>
+                <td>{{ data[0].id }}</td>
+                <td>{{ data[1].package_id }}</td>
+                <td>{{ data[0].title }}</td>
+                <td>{{ data[0].state }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table> 
+{% endblock %}

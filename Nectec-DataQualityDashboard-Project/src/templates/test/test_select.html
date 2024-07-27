@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity= "sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"> </script> 
+</head>
+<body>
+    
+    <h3> 
+        You have selected this Parent: <span id="showSelectedParent"></span>
+    </h3> 
+    
+    <form >
+        <select name="selectedParent" id="parentList" onchange="onChange()">
+            {% for parent_selected in parent_query %}
+                <option value="{{ parent_selected.id }}"> {{ parent_selected.parent_title }} </option>
+            {% endfor %}
+        </select>
+        <br>
+        <select name="selectedChild" id="selectedChild">
+            <option value="">เลือกหน่วยงานย่อย</option>
+        </select>
+    </form>
+        
+
+    <script>
+        function onChange() {
+            var selectedParentValue = document.getElementById("parentList").value;
+            // document.getElementById("showSelectedParent").textContent = selectedValue;
+            // res:response
+            $.post('/test2', {'selectedParent_id': selectedParentValue}, function(res){
+                $.each(res, function(i, v){
+                    console.log(v)
+                    $('#selectedChild').append('<option value="'+v.org_id+'">'+v.org_title+'</option>')
+                })
+            })
+    }
+    </script>
+</body>
+</html>

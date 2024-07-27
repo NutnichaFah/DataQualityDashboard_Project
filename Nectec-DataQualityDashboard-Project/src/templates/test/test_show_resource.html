@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="../static/css/datasets.css">
+{% endblock %}
+
+{% block link %}
+    <!-- Bootstraps -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- DataTable js-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />
+  
+{% endblock %}
+
+
+{% block content %}
+
+    <a href="/datasets" class="btn btn-success">กลับหน้าชุดข้อมูล</a>
+    
+        <!-- Check if title_package is not empty -->
+        {% if title_package %}
+        <!-- Access the first tuple and its first element to get the title -->
+            <h2>ชุดข้อมูล: {{ title_package[0][0] }}</h2>
+        {% endif %}
+
+        <!-- Count resource -->
+        <h4>จำนวนทรัพยากร: {{ resource_in_package_count }}</h4>
+
+
+    <!-- Selected Resource Table  -->
+    <table id="table-resource" class="table table-striped ">
+        <thead>
+            <tr class="table">
+                <th>Id</th>
+                <th>ชุดข้อมูล</th>
+                <th>Format</th>
+                <th>Timeliness</th>
+                <th>Openness</th>
+                <th>Downloadable</th>
+                <th>Validity</th>
+                <th>Consistency</th>
+                <th>Machine_readable</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dt in results %}
+                <tr>
+                    <td>{{ dt.id }}</td>
+                    <td>{{ dt.name }}</td>
+                    <td>{{ dt.format }}</td>
+                    <td>{{ dt.timeliness }}</td>
+                    <td>{{ dt.openness }}</td>
+                    <td>{{ dt.downloadable }}</td>
+                    <td>{{ dt.validity }}</td>
+                    <td>{{ dt.consistency }}</td>
+                    <td>{{ dt.machine_readable }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+    <table>
+
+
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- DataTable -->
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+    
+{% endblock %}

@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+
+{% block link %}
+<link rel="stylesheet" href="../static/css/package.css">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ"
+    crossorigin="anonymous"></script>
+
+<!-- DatePicker CSS -->
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css"
+    integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet'>
+
+<!-- DataTable CSS-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+
+<!-- JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- DataTable js-->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+<!-- DatePicker js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"
+    integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/locales/bootstrap-datepicker.th.min.js"
+    integrity="sha512-cp+S0Bkyv7xKBSbmjJR0K7va0cor7vHYhETzm2Jy//ZTQDUvugH/byC4eWuTii9o5HN9msulx2zqhEXWau20Dg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"> </script>
+
+<!-- Pickadate -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pickadate/lib/picker.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pickadate/lib/picker.date.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pickadate/lib/translations/th_TH.js"></script>
+{% endblock %}
+
+{% block content %}
+<script>
+    $(document).ready(function () {
+        $('#startdate')
+            .datepicker({
+                changeMonth: true,
+                changeYear: true,
+                format: "dd/mm/yyyy",
+                language: "th",
+                todayBtn: "linked",
+                autoclose: true,
+                clearBtn: true,
+                todayHighlight: true,
+            })
+            .on("changeDate", function (e) {
+                var minDate = new Date(e.date.valueOf());
+                $('#enddate').datepicker("setStartDate", minDate);
+            });
+        $('#enddate')
+            .datepicker({
+                changeMonth: true,
+                changeYear: true,
+                format: "dd/mm/yyyy",
+                language: "th",
+                autoclose: true,
+                clearBtn: true,
+                todayHighlight: true,
+            });
+        $('#range').click(function () {
+            var startdate = $('#startdate').val();
+            var enddate = $('#enddate').val();
+            alert("วันที่เริ่มต้น: " + startdate + ", วันที่สิ้นสุด: " + enddate);
+            page = location.pathname.split('/')[2]
+
+            if (startdate != '' && enddate != '') {
+                $.ajax({
+                    url: '/range/' + page,
+                    method: 'POST',
+                    data: {
+                        startdate: startdate,
+                        enddate: enddate
+                    },
+                    success: function (data) {
+                        $('#result_data').html(data);
+                        // Update pagination container with the new data
+                        $('#pagination').html(data);
+                    }
+                });
+            }
+            else {
+                alert("Please Select the Date");
+            }
+        });
+    });
+</script>
+
+<div class="input-group">
+    <input type="text" name="Start Date" id="startdate" class="form-control" placeholder="Start Date">
+    <div class="input-group-addon">to</div>
+    <input type="text" name="End Date" id="enddate" class="form-control" placeholder="End Date">
+    <button class="btn btn-primary" name="range" id="range" type="button">ตกลง</button>
+</div>
+
+<hr>
+
+<!-- Table Data -->
+<div class="container-fluid" id="result_data">
+    <div id="table_data" class="row">
+        <table id="example" class="table table-striped table-bordered">
+            <caption>Package Table</caption>
+            <thead>
+                <tr>
+                    <th>metadata_created</th>
+                    <!-- <th>pa_id</th> -->
+                    <th>name</th>
+                    <th>title</th>
+                    <!-- <th>version</th>
+                    <th>url</th>
+                    <th>notes</th>
+                    <th>author</th>
+                    <th>author_email</th>
+                    <th>maintainer</th>
+                    <th>maintainer_email</th>
+                    <th>state</th>
+                    <th>license_id</th>
+                    <th>type</th>
+                    <th>owner_org</th>
+                    <th>private</th>
+                    <th>metadata_modified</th>
+                    <th>creator_user_id</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for package in package_q %}
+                <tr>
+                    <td>{{ package.metadata_created }}</td>
+                    <!-- <td>{{ package.id }}</td> -->
+                    <td>{{ package.name }}</td>
+                    <td>{{ package.title }}</td>
+                    <!-- <td>{{ package.version }}</td>
+                    <td>{{ package.url }}</td>
+                    <td>{{ package.notes }}</td>
+                    <td>{{ package.author }}</td>
+                    <td>{{ package.author_email }}</td>
+                    <td>{{ package.maintainer }}</td>
+                    <td>{{ package.maintainer_email }}</td>
+                    <td>{{ package.state }}</td>
+                    <td>{{ package.type }}</td>
+                    <td>{{ package.license_id }}</td>
+                    <td>{{ package.owner_org }}</td>
+                    <td>{{ package.private }}</td>
+                    <td>{{ package.metadata_modified }}</td>
+                    <td>{{ package.creator_user_id }}</td> -->
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>metadata_created</th>
+                    <!-- <th>pa_id</th> -->
+                    <th>name</th>
+                    <th>title</th>
+                    <!-- <th>version</th>
+                    <th>url</th>
+                    <th>notes</th>
+                    <th>author</th>
+                    <th>author_email</th>
+                    <th>maintainer</th>
+                    <th>maintainer_email</th>
+                    <th>state</th>
+                    <th>license_id</th>
+                    <th>type</th>
+                    <th>owner_org</th>
+                    <th>private</th>
+                    <th>metadata_modified</th>
+                    <th>creator_user_id</th> -->
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation">
+        <div>
+            <!-- Pagination -->
+            <ul class="pagination">
+                {% if package_q.has_prev %}
+                <li class="page-item"><a class="page-link"
+                        href="{{ url_for('package_page', page_num=package_q.prev_num) }}">Previous</a>
+                </li>
+                {% else %}
+                <!-- If not, show a disabled 'Previous' button -->
+                <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                {% endif %}
+
+                {% for page in package_q.iter_pages() %}
+                {% if page %}
+                {% if page == package_q.page %}
+                <li class="page-item active" aria-current="page"><span class="page-link">{{ page }}</span></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="{{ url_for('package_page', page_num=page) }}">{{ page
+                        }}</a>
+                </li>
+                {% endif %}
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+                {% endif %}
+                {% endfor %}
+
+                {% if package_q.has_next %}
+                <li class="page-item"><a class="page-link"
+                        href="{{ url_for('package_page', page_num=package_q.next_num) }}">Next</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Next</span></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    {% endblock %}
+
+    {% block javascript %}
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+        </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
+    </script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/locales/bootstrap-datepicker.th.min.js"
+        integrity="sha512-cp+S0Bkyv7xKBSbmjJR0K7va0cor7vHYhETzm2Jy//ZTQDUvugH/byC4eWuTii9o5HN9msulx2zqhEXWau20Dg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+        </script>
+    {% endblock %}

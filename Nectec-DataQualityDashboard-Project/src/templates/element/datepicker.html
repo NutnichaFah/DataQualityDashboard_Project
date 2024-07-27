@@ -1,0 +1,91 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity= "sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"> </script> 
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>  
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    $(document).ready(function(){
+        $('#startdate')
+        .datepicker({
+            changeMonth: true,
+            changeYear: true,
+            format: "dd/mm/yyyy",
+            language: "th",
+            todayBtn: "linked",
+            autoclose: true,
+            clearBtn:true,
+            todayHighlight:true,
+        })
+        .on("changeDate", function (e) {
+            var minDate = new Date(e.date.valueOf());
+            $('#enddate').datepicker("setStartDate", minDate);
+        });
+        $('#enddate')
+        .datepicker({
+            changeMonth: true,
+            changeYear: true,
+            format: "dd/mm/yyyy",
+            language: "th",
+            autoclose: true,
+            clearBtn:true,
+            todayHighlight:true,
+        });
+        $('#range').click(function(){
+            var startdate = $('#startdate').val();
+            var enddate = $('#enddate').val();
+            alert("วันที่เริ่มต้น: " + startdate + ", วันที่สิ้นสุด: " + enddate);
+            page = location.pathname.split('/')[2]
+            //   console.log(typeof page)
+            if(startdate != '' && enddate != '')
+            {
+                $.ajax({
+                    url:'/range/'+ page,
+                    method:'POST',
+                    data:{
+                        startdate:startdate, 
+                        enddate:enddate
+                    },
+                    success:function(data)
+                    {
+                        $('#result_data').html(data);
+                        // Update pagination container with the new data
+                        $('#pagination').html(data);
+                    }
+                });
+            }
+            else
+            {
+                alert("Please Select the Date");
+            }
+        });
+    });
+</script>
+
+<div class="input-group">
+    <input type="text" name="Start Date" id="startdate" class="form-control" placeholder="Start Date">
+    <div class="input-group-addon">to</div>
+    <input type="text" name="End Date" id="enddate" class="form-control" placeholder="End Date">
+    <button class="btn btn-primary" name="range" id="range" type="button">ตกลง</button>
+</div>
+
+
+<script src= 
+     "https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" 
+             integrity= 
+     "sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" 
+             crossorigin="anonymous"> 
+</script> 
+<script src= 
+     "https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" 
+             integrity= 
+     "sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
+             crossorigin="anonymous"> 
+</script> 
+<script src= 
+     "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"> 
+</script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/locales/bootstrap-datepicker.th.min.js" 
+         integrity="sha512-cp+S0Bkyv7xKBSbmjJR0K7va0cor7vHYhETzm2Jy//ZTQDUvugH/byC4eWuTii9o5HN9msulx2zqhEXWau20Dg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+</script>

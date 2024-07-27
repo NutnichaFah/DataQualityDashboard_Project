@@ -1,0 +1,50 @@
+label {
+  display: inline-flex;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Filter Group */
+.dashboard-filter-group {
+  margin: 10px 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background: coral; */
+}
+.dashboard-filter-group .select {
+  width: 400px;
+  /* background: orangered;
+  border: dotted 1px black; */
+}
+
+.dashboard-filter-group p {
+  font-size: 20px;
+  margin: 5px 0px;
+  /* background: greenyellow; */
+}
+
+.dashboard-filter-group select {
+  display: flex;
+  width: 400px;
+  margin-top: 5px 0px;
+  /* background: darkblue; */
+}
+
+.page-item.disabled .page-link {
+  color: #252525;
+  pointer-events: none;
+  cursor: auto;
+  background-color: #fff;
+  border-color: #dee2e6;
+}
+
+.no_ref_id {
+  text-decoration: none;
+  color: black;
+}
+
+.no_ref_id:hover {
+  text-decoration: none;
+  color: red;
+}

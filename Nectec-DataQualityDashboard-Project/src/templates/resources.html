@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- DataTable CSS-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+{% endblock %}
+
+{% block content %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>re_id</th>
+            <!-- <th>url</th> -->
+            <th>format</th>
+            <th>description</th>
+            <th>position</th>
+            <th>hash</th>
+            <th>state</th>
+            <th>extras</th>
+            <th>name</th>
+            <th>resource_type</th>
+            <th>mimetype</th>
+            <!-- <th>mimetype_inner</th> -->
+            <th>size</th>
+            <!-- <th>last_modified</th>
+            <th>cache_url</th>
+            <th>cache_last_updated</th>
+            <th>webstore_url</th>
+            <th>webstore_last_updated</th>
+            <th>created</th>
+            <th>url_type</th> -->
+            <th>package_id</th>
+            <!-- <th>webstore_url</th> -->
+        </tr>
+    </thead>
+    <tbody>
+        {% for resource in resources %}
+        <tr>
+            <td>{{ resource.id }}</td>
+            <!-- <td>{{ resource.url }}</td> -->
+            <td>{{ resource.format }}</td>
+            <td>{{ resource.description }}</td>
+            <td>{{ resource.position }}</td>
+            <td>{{ resource.hash }}</td>
+            <td>{{ resource.state }}</td>
+            <td>{{ resource.extras }}</td>
+            <td>{{ resource.name }}</td>
+            <td>{{ resource.resource_type }}</td>
+            <td>{{ resource.mimetype }}</td>
+            <!-- <td>{{ resource.mimetype_inner }}</td> -->
+            <td>{{ resource.size }}</td>
+            <!-- <td>{{ resource.last_modified }}</td>
+            <td>{{ resource.cache_url }}</td>
+            <td>{{ resource.cache_last_updated }}</td>
+            <td>{{ resource.webstore_url }}</td>
+            <td>{{ resource.webstore_last_updated }}</td>
+            <td>{{ resource.created }}</td>
+            <td>{{ resource.url_type }}</td> -->
+            <td>{{ resource.package_id }}</td>
+            <!-- <td>{{ resource.webstore_url }}</td> -->
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<!-- Pagination -->
+<nav aria-label="Page navigation">
+    <div>
+        <!-- Pagination -->
+        <ul class="pagination">
+            {% if resources.has_prev %}
+            <li class="page-item"><a class="page-link"
+                    href="{{ url_for('list_resource', page_num=resources.prev_num) }}">Previous</a>
+            </li>
+            {% else %}
+            <!-- If not, show a disabled 'Previous' button -->
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+            {% endif %}
+
+            {% for page in resources.iter_pages() %}
+            {% if page %}
+            {% if page == resources.page %}
+            <li class="page-item active" aria-current="page"><span class="page-link">{{ page }}</span></li>
+            {% else %}
+            <li class="page-item"><a class="page-link" href="{{ url_for('list_resource', page_num=page) }}">{{ page
+                    }}</a>
+            </li>
+            {% endif %}
+            {% else %}
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+            {% endfor %}
+
+            {% if resources.has_next %}
+            <li class="page-item"><a class="page-link"
+                    href="{{ url_for('list_resource', page_num=resources.next_num) }}">Next</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link">Next</span></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+{% endblock %}

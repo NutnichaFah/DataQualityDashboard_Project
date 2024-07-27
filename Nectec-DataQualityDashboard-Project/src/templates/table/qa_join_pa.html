@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Quality Metrics</title>
+    <style>
+        body {
+          font-family: Sans-Serif;
+        }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ref_id</th>
+                <th>package_id</th>
+                <th>package_url</th>
+                <th>package_title</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in join_pa_data %}
+                <tr>
+                    <td>{{ data[0].ref_id }}</td>
+                    <td>{{ data[1].id }}</td>
+                    <td>{{ data[1].url }}</td>
+                    <td>{{ data[1].title }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
